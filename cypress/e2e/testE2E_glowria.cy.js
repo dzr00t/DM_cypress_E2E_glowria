@@ -29,7 +29,7 @@ describe('Test du site web glowria', () => {
 
     });
 
-    it('Creation de compte', () => {
+    it('Creation de compte', { tags: '@signup' }, () => {
         // creation dun nv compte
 
         homepage.clickSignUp()
@@ -56,7 +56,7 @@ describe('Test du site web glowria', () => {
     });
 
 
-    it('Se connecter et Choisir un produit ', () => {
+    it('Se connecter et Choisir un produit ', { tags: ['@login', '@achat'] }, () => {
 
         homepage.seConnecter(newemail, password)
         homepage.clickbtn_lacheter()
