@@ -20,7 +20,14 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       // plugin allure
       allureWriter(on, config);
-      return config
+      return config,
+        on('before:browser:launch', (browser = {}, launchOptions) => {
+          // S'applique à Electron et Chrome dans Docker
+          if (browser.family === 'chromium') {
+            launchOptions.args.push('--enable-unsafe-swiftshader');
+          }
+          return launchOptions;
+        });
 
 
     },
