@@ -16,6 +16,7 @@ module.exports = defineConfig({
     allureReuseAfterSpec: true,
   },
   e2e: {
+    chromeWebSecurity: false,
     setupNodeEvents(on, config) {
       // plugin allure
       allureWriter(on, config);
