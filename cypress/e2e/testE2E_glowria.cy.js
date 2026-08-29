@@ -71,6 +71,7 @@ describe('Test du site web glowria', () => {
         cy.url().should('include', '/validation');
         validationpage.check_CGV()
         validationpage.clickPayer()
+        // assertion qd l environemment change
         cy.origin('https://secure.payzen.eu', () => {
             cy.url().should('include', '/vads-payment/')
         })

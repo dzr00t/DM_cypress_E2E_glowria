@@ -1,0 +1,124 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-08-29T15:06:36.434Z",
+    "end": "2026-08-29T15:07:22.641Z",
+    "duration": 46207,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "1aaa0735-3f65-4ade-b32b-8d832034b4c8",
+      "title": "",
+      "fullFile": "cypress\\e2e\\testE2E_glowria.cy.js",
+      "file": "cypress\\e2e\\testE2E_glowria.cy.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "ccaff977-6485-4de7-8171-c521cb3772d1",
+          "title": "Test du site web glowria",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Creation de compte",
+              "fullTitle": "Test du site web glowria Creation de compte",
+              "timedOut": null,
+              "duration": 14515,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// creation dun nv compte\n_homepage.default.clickSignUp();\n_homepage.default.saisirEmail(newemail);\n_homepage.default.clickSubmit();\n//assertion du bon url pour le remplissage des champs du compte\ncy.url().should('include', '/signup');\n// remplir les champs pour le nv compte\n_signUp.default.saisirPrenom(prenom);\n_signUp.default.saisirNom(nom);\n_signUp.default.confirmerEmail(newemail);\n_signUp.default.saisirPassword(password);\n// assertion de l exigence du mdp \n_signUp.default.getmdpValid().should('be.visible');\n//remplissage des champs\n_signUp.default.saisirBirthday(date);\n_signUp.default.checknewsletterBox();\n_signUp.default.checkpartenerBox();\n_signUp.default.checklegalmentionsBox();\n_signUp.default.clicksubmitBtn();\n// assertion du bon url \ncy.url().should('eql', 'https://glowria.com/');",
+              "err": {},
+              "uuid": "74716dc7-9c45-4e08-9b60-dc578a899f0a",
+              "parentUUID": "ccaff977-6485-4de7-8171-c521cb3772d1",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Se connecter et Choisir un produit ",
+              "fullTitle": "Test du site web glowria Se connecter et Choisir un produit ",
+              "timedOut": null,
+              "duration": 25851,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "_homepage.default.seConnecter(newemail, password);\n_homepage.default.clickbtn_lacheter();\n// assertion du bon url\ncy.url().should('include', '/personal/presentation/glowria');\n_achatpage.default.clickJeCraque();\ncy.url().should('include', '/order/personal/creation/');\n_orderpage.default.saisirAdresse(adresse);\n_orderpage.default.saisirPhoneNumber(phone);\n_orderpage.default.clickValider();\n// verifier la validation \ncy.url().should('include', '/validation');\n_validationpage.default.check_CGV();\n_validationpage.default.clickPayer();\ncy.origin('https://secure.payzen.eu', () => {\n  cy.url().should('include', '/vads-payment/');\n});",
+              "err": {},
+              "uuid": "7750d36f-af2a-4fb8-9da6-83267ce9fdba",
+              "parentUUID": "ccaff977-6485-4de7-8171-c521cb3772d1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "74716dc7-9c45-4e08-9b60-dc578a899f0a",
+            "7750d36f-af2a-4fb8-9da6-83267ce9fdba"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 40366,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "8.0.1"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/reports/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.3.2"
+    }
+  }
+}
