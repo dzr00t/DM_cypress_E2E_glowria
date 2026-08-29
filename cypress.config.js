@@ -16,20 +16,12 @@ module.exports = defineConfig({
     allureReuseAfterSpec: true,
   },
   e2e: {
-    chromeWebSecurity: false,
+    //chromeWebSecurity: false,
     setupNodeEvents(on, config) {
       // plugin allure
       allureWriter(on, config);
-      return config,
+      return config
 
-        on('before:browser:launch', (browser = {}, launchOptions) => {
-          // Détecte Electron et tous les navigateurs basés sur Chromium
-          if (browser.family === 'chromium') {
-            launchOptions.args.push('--disable-gpu');
-            launchOptions.args.push('--disable-software-rasterizer');
-          }
-          return launchOptions;
-        });
 
     },
   },
