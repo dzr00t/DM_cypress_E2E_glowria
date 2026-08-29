@@ -6,13 +6,10 @@ import signUp from "../pages/signUp.page";
 let newemail = faker.internet.email()
 let prenom = faker.person.firstName()
 let nom = faker.person.lastName()
-let date 
+let date = getRandomBirthDateFaker()
+
 // generer un mdp ac : min 8 caractères,1 caractère en minuscule,1 caractère en majuscule,1 chiffre,1 caractère spécial
-let password = faker.internet.password({
-    length: 10,
-    memorable: false,
-    pattern: /[a-z]/
-}) + 'A1!'
+let password = faker.internet.password({ length: 10, memorable: false, pattern: /[a-z]/ }) + 'A1!'
 
 
 
@@ -42,9 +39,33 @@ describe('Test du site web glowria', () => {
         signUp.saisirPassword(password)
         // assertion de l exigence du mdp 
         signUp.getmdpValid().should('be.visible')
+        //remplissage des champs
         signUp.saisirBirthday(date)
-
+        signUp.checknewsletterBox()
+        signUp.checkpartenerBox()
+        signUp.checklegalmentionsBox()
+        signUp.clicksubmitBtn()
+        // assertion du bon url 
+        cy.url().should('eql', 'https://glowria.com/');
+        homepage.clickbtn_lacheter()
+        // assertion du bon url
 
     });
 
+
+
+
 });
+
+
+
+//fonction
+function getRandomBirthDateFaker() {
+    const birthDate = faker.date.birthdate({ min: 18, mode: 'age' });
+
+    const jj = String(birthDate.getDate()).padStart(2, '0');
+    const mm = String(birthDate.getMonth() + 1).padStart(2, '0');
+    const aaaa = birthDate.getFullYear();
+
+    return `${jj}${mm}${aaaa}`;
+}

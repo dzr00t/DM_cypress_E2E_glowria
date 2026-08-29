@@ -9,6 +9,7 @@ class homepage {
         btn_inscription: () => cy.get('input[type="submit"][value="Inscription"]'),
         cookies: () => cy.get('#axeptio_main_button'),
         no_cookies: () => cy.get('#axeptio_btn_dismiss'),
+        btn_lacheter: () => cy.get("a[href*='personal/presentation/glowria']"),
 
 
 
@@ -31,6 +32,10 @@ class homepage {
         this.elements.no_cookies().should('be.visible').click({ force: true })
 
     }
+    clickbtn_lacheter() {
+        this.elements.btn_lacheter().click({ force: true })
+    }
+
 
 
 
