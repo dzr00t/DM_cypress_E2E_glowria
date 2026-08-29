@@ -1,7 +1,8 @@
 ///<reference types = 'cypress'/>
 
 class homepage {
-    // 
+    // attribut (element de la page)
+
     elements = {
 
         icon_signup: () => cy.get('a[aria-label="account"]'),
@@ -9,8 +10,11 @@ class homepage {
         btn_inscription: () => cy.get('input[type="submit"][value="Inscription"]'),
         cookies: () => cy.get('#axeptio_main_button'),
         no_cookies: () => cy.get('#axeptio_btn_dismiss'),
-        btn_lacheter: () => cy.get("a[href*='personal/presentation/glowria']"),
-
+        btn_lacheter: () => cy.get("a[href*='personal/presentation/glowria']").contains("L'ACHETER"),
+        // login
+        email: () => cy.get("#email"),
+        password: () => cy.get("#password"),
+        btn_connection: () => cy.get('input[type="submit"][value="Se connecter"]'),
 
 
 
@@ -34,6 +38,15 @@ class homepage {
     }
     clickbtn_lacheter() {
         this.elements.btn_lacheter().click({ force: true })
+    }
+
+
+    seConnecter(email, password) {
+        this.clickSignUp()
+        this.elements.email().type(email, { force: true })
+        this.elements.password().type(password, { force: true })
+        this.elements.btn_connection().click()
+
     }
 
 

@@ -1,7 +1,9 @@
 ///<reference types = 'cypress'/>
+import { faker } from "@faker-js/faker";
+
 
 class signup {
-    // 
+    // attribut (element de la page)
     elements = {
 
         prenom: () => cy.get('#customer_firstName'),
@@ -14,8 +16,6 @@ class signup {
         partenerBox: () => cy.get('#customer_optinPartnerNewsletter'),
         legalmentionsBox: () => cy.get('#legalmentions'),
         submitBtn: () => cy.get('#submitBtn')
-
-
 
 
     }
@@ -55,10 +55,15 @@ class signup {
         this.elements.submitBtn().click()
     }
 
+    getRandomBirthDateFaker() {
+        const birthDate = faker.date.birthdate({ min: 18, mode: 'age' });
 
+        const jj = String(birthDate.getDate()).padStart(2, '0');
+        const mm = String(birthDate.getMonth() + 1).padStart(2, '0');
+        const aaaa = birthDate.getFullYear();
 
-
-
+        return `${jj}${mm}${aaaa}`;
+    }
 
 }
 
