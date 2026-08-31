@@ -18,6 +18,10 @@ module.exports = defineConfig({
   e2e: {
     //chromeWebSecurity: false,
     setupNodeEvents(on, config) {
+      // plugin tags 
+      const { plugin: cypressGrepPlugin } = require("@cypress/grep/plugin")
+      cypressGrepPlugin(config)
+
       // plugin allure
       allureWriter(on, config);
       return config
