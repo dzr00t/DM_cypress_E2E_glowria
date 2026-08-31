@@ -47,9 +47,9 @@ pipeline{
                                 
                             }else if(params.isMochawesome){
                                 if(params.istags){
-                                    sh"NO_COLOR=1 npx cypress run --env grepTags='${params.Tags}' --reporter mochawesome"
+                                    sh "NO_COLOR=1 npx cypress run --env grepTags='${params.Tags}' --reporter mochawesome --reporter-options reportDir=cypress/reports/mochawesome,overwrite=false,html=true,json=true"
                                 }else {
-                                    sh"NO_COLOR=1 npx cypress run --reporter mochawesome"
+                                    sh "NO_COLOR=1 npx cypress run --reporter mochawesome --reporter-options reportDir=cypress/reports/mochawesome,overwrite=false,html=true,json=true"
                                 }
                                 stash name: 'mocha-results', includes: 'cypress/reports/mochawesome/*', allowEmpty: true
                             }else {
