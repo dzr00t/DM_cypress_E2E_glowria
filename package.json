@@ -16,6 +16,7 @@
     "@faker-js/faker": "^10.6.0",
     "@shelex/cypress-allure-plugin": "^2.41.2",
     "allure-commandline": "^2.43.0",
+    "cypress": "^14.5.4",
     "mochawesome": "^8.0.1",
     "mochawesome-merge": "^5.1.1",
     "mochawesome-report-generator": "^6.3.2"
