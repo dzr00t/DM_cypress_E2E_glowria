@@ -51,7 +51,7 @@ pipeline{
                                 }else {
                                     sh"NO_COLOR=1 npx cypress run --reporter mochawesome"
                                 }
-                                stash name: 'mocha-results', includes: 'mochawesome-report/*', allowEmpty: true
+                                stash name: 'mocha-results', includes: 'cypress/reports/mochawesome/*', allowEmpty: true
                             }else {
                                 if(params.istags){
                                     sh"NO_COLOR=1 npx cypress run --env grepTags='${params.Tags}'"
@@ -78,7 +78,7 @@ pipeline{
                 if(params.isMochawesome){
                 unstash 'mocha-results'
                 // archiveArtifacts va créer un lien cliquable sur la page Jenkins
-                archiveArtifacts artifacts: 'mochawesome-report/*', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'cypress/reports/mochawesome/*', allowEmptyArchive: true
             }
             }
         }
