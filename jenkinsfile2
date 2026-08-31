@@ -5,7 +5,7 @@ pipeline{
         booleanParam(name: 'isMochawesome', defaultValue: false, description: 'generation de rapport mochawesome')
         booleanParam(name: 'istags', defaultValue: false, description: 'executer avec ou sans tags')
         // J'utilise string ici pour que tu puisses écrire plusieurs tags séparés par des virgules
-        string(name: 'Tags', defaultValue: '@signup', description: 'Ecrivez vos tags séparés par des virgules (ex: @valide, @invalide)')
+        string(name: 'Tags', defaultValue: '@signup', description: 'Ecrivez vos tags (@signup @login @achat ) séparés par des virgules (ex: @signup, @login)')
     }
     stages{
         stage('global stage'){
