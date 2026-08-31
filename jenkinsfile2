@@ -1,53 +1,79 @@
-pipeline {
-    agent {
-        docker{
-            image 'cypress/included:14.5.4'
-            args '--entrypoint='
-        }
+pipeline{
+    agent any
+    parameters{
+        booleanParam(name: 'isAllure', defaultValue: false, description: 'generation de rapport allure')
+        booleanParam(name: 'isMochawesome', defaultValue: false, description: 'generation de rapport mochawesome')
+        booleanParam(name: 'istags', defaultValue: false, description: 'executer avec ou sans tags')
+        // J'utilise string ici pour que tu puisses écrire plusieurs tags séparés par des virgules
+        string(name: 'Tags', defaultValue: '@signup', description: 'Ecrivez vos tags séparés par des virgules (ex: @valide, @invalide)')
     }
+    stages{
+        stage('global stage'){
+            agent{
+                docker{
+                    image 'cypress/included:14.5.4'
+                    args '--entrypoint='
+                }
+            }
+            stages{
+                stage('instalation dependance'){
+                    steps{
+                        sh 'npm ci'
+                    }
+                }
 
-    //parametres de choix lors du lancement du build
-    parameters {
-        choice(name: 'TAG', choices: ['all', '@signup', '@login' , '@achat'], description: 'Choisissez le tag à exécuter (all = tout exécuter)')
-        choice(name: 'RAPPORT', choices: ['aucun', 'mochawesome', 'allure'], description: 'Choisissez le type de rapport à générer')
-    }
-
-    stages {
-        stage('installation dependance') {
-            steps {
-                sh 'npm ci'
+                stage('clean results'){
+                    steps{
+                        sh '''
+                            echo "Suppression du cache Allure..."
+                            rm -rf allure-results
+                            mkdir -p allure-results
+                            echo "Dossier allure-results nettoyé avec succès"
+                        '''
+                    }
+                }
+        
+                stage('lancement de test'){
+                    steps{  
+                        script{
+                            if(params.isAllure){
+                                if(params.istags){
+                                    // Utilisation de grepTags pour les tags sous Cypress
+                                    sh"NO_COLOR=1 npx cypress run --env grepTags='${params.Tags}',allure=true"
+                                }else {
+                                    sh"NO_COLOR=1 npx cypress run --env allure=true"
+                                }
+                                stash name: 'allure-results', includes: 'allure-results/*'
+                                
+                            }else if(params.isMochawesome){
+                                if(params.istags){
+                                    sh"NO_COLOR=1 npx cypress run --env grepTags='${params.Tags}' --reporter mochawesome"
+                                }else {
+                                    sh"NO_COLOR=1 npx cypress run --reporter mochawesome"
+                                }
+                                
+                            }else {
+                                if(params.istags){
+                                    sh"NO_COLOR=1 npx cypress run --env grepTags='${params.Tags}'"
+                                }else {
+                                    sh"NO_COLOR=1 npx cypress run"
+                                }   
+                            }
+                        }
+                    }
+                }
             }
         }
-
-        stage('lancement de test') {
-            steps {
-                script {
-                    // Commande de base
-                    def cypressCmd = "NO_COLOR=1 npx cypress run"
-                    def envParams = []
-
-                    // 1. Gestion des tags
-                    if (params.TAG != 'all') {
-                        // Modifiez 'grepTags' par 'tags' si vous utilisez Cucumber au lieu de cypress-grep
-                        envParams.add("grepTags=${params.TAG}") 
-                    }
-
-                    // 2. Gestion du type de rapport
-                    if (params.RAPPORT == 'mochawesome') {
-                        cypressCmd += " --reporter mochawesome"
-                    } else if (params.RAPPORT == 'allure') {
-                        // Allure s'active généralement via une variable d'environnement sous Cypress
-                        envParams.add("allure=true")
-                    }
-
-                    // 3. Concaténation des variables d'environnement (Cypress prend un seul flag --env avec des virgules)
-                    if (envParams.size() > 0) {
-                        cypressCmd += " --env " + envParams.join(',')
-                    }
-
-                    // Exécution de la commande finale
-                    echo "Exécution de la commande : ${cypressCmd}"
-                    sh cypressCmd
+    }
+    post{
+        always{
+            script{
+                // On génère le rapport Allure à la fin si la case était cochée
+                if(params.isAllure){
+                    unstash 'allure-results'
+                    allure includeProperties: false,
+                           jdk: '',
+                           results: [[path: 'allure-results/']]
                 }
             }
         }
